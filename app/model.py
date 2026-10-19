@@ -23,3 +23,15 @@ class Workflow(Base):
     actions: Mapped[list] = mapped_column(JSON)
     enabled: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+class Run(Base):
+    __tablename__ = "runs"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    workflow_id: Mapped[int] = mapped_column(ForeignKey("workflows.id"), nullable=False)
+    status: Mapped[str] = mapped_column(String(20), default="pending")
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), default=None)
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), default=None)
+    result: Mapped[dict | None] = mapped_column(JSON, default=None)
+
+    workflow: Mapped["Workflow"] = relationship("Workflow", back_populates="runs")
