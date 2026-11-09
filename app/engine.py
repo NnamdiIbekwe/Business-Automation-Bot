@@ -55,3 +55,6 @@ context = {**flatten(event.payload), "event.type": event.type, "event.id": str(e
         failed += 0 if ok else 1
         db.add(Run(workflow_id=workflow_id, event_id=event_id,
                     status="success" if ok else "failed", detail=results))
+    
+    event.status = "ignored" if matched == 0 else ("failed" if failed else "processed")
+    db.commit()
