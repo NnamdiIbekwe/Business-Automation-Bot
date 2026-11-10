@@ -35,8 +35,8 @@ def process_event(event_id: int) -> None:
             logger.warning("event %s not found", event_id)
             return
         
-        workflows = db.scalar(
-            select(workflow).where(workflow.enabled.is_(True), workflow.event_type == event.type)
+        workflows = db.scalars(
+            select(Workflow).where(workflow.enabled.is_(True), workflow.event_type == event.type)
         ).all()
 
 context = {**flatten(event.payload), "event.type": event.type, "event.id": str(event.id)}
