@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 
 
-app = FastAPI()
-
-@app.get("/")
+app = FastAPI(title="Settings.app_name", version="1.0.0", lifespan="lifespan")
+protected = APIRouter(dependencies=[Depends(require_api_key)])
+@app.get("/health", tags=["system"])
 async def read_root():
     return {"Hello": "World"}
 
